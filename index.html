@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mirrorinth</title>
+    <style>
+        #game-container {
+            width: 800px;
+            height: 600px;
+            margin: auto;
+        }
+        #menu-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #menu-container button {
+            margin: 10px;
+        }
+
+        #ranking-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #ranking-container button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="game">
+        <div id="menu-container" v-show="!gameStarted && !gameEnded">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+                <defs>
+                  <pattern id="background" patternUnits="userSpaceOnUse" width="200" height="200">
+                    <image href="assets/suelo.png" x="0" y="0" width="200" height="200" />
+                  </pattern>
+                  <linearGradient id="gradient" x1="0" y1="0" x2="100%" y2="0">
+                    <stop offset="0%" stop-opacity="0" />
+                    <stop offset="100%" stop-opacity="1" />
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="200" height="200" fill="url(#background)" />
+                <image href="assets/mirror.png" onmouseover="alternarImagen()" x="40" y="40" width="120" height="120" />
+                <image href="assets/player.png" x="70" y="110" width="60" height="60" opacity="0.3"/>
+                <image id="animacio" href="assets/vela1.png" x="102" y="103" width="30" height="30" />
+                <text x="50%" y="40%" text-anchor="middle" dominant-baseline="middle" fill="url(#gradient)"  font-size="24">Mirrorinth</text>
+            </svg>
+
+        </div>
+        <div id="game-container" v-show="gameStarted">
+            <div id="timer" v-show="!gameEnded">
+                Temps: {{ timer }}
+            </div>
+            <button @click="guardaPartida">Guardar partida</button>
+        </div>
+        <div id="menu-container" v-show="!gameStarted && !gameEnded">
+            <h1>Mirrorinth game</h1>
+            <label for="playerName">Nom del jugador:</label>
+            <input type="text" id="playerName" v-model="playerName">
+            <button @click="startGame">Comença partida</button>
+            <button @click="cargaPartida">Carrega partida</button>
+        </div>
+        <div id="menu-container" v-show="!gameStarted && !gameEnded">
+            <button @click="closeGame">Tenca joc</button>
+            <button @click="clearRanking">Borra ranking</button>
+        </div>
+        <div id="ranking-container" v-show="gameEnded">
+            <h1>¡Has completat el laberint!</h1>
+            <h2>Temps total: {{ timer }} segons</h2>
+            <h2>Ranking:</h2>
+            <ul>
+                <li v-for="score in ranking">
+                    {{ score.player }} -> {{ score.time }} segundos
+                </li>
+            </ul>
+            
+            <button @click="toMenu">Torna al menu</button>
+        </div>
+        <div id="menu-container" v-show="!gameStarted && !gameEnded">
+            <h1>Pistes:</h1>
+            <ul>
+                <li>
+                    -Cada 25 segons et perdrás a la cova de miralls i tornes al principi!
+                </li>
+                <li>
+                    -El fum de les espelmes sempre segueix el corrent d'aire a les coves,
+                    no els afecta les ilusions...
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
